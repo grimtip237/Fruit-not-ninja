@@ -2,49 +2,150 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Parallax</title>
+	<title>	</title>
 	<style type="text/css">
-		.body{
-			font-family: poppins;
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
-		.parallax {
-			background: url(bg.jpg);
-			background-attachment: fixed; /*самая важная часть*/
-			height: 500px;
-			display: flex;
-			justify-content: safe center;
-			align-items: center;
-			position: relative;
-		}
-		.parallax-h1 {
-			color: whitesmoke;
-			font-size: 70;
-		}
-		.parallax-mask {
+		.sphere {
+			width: 100px;
+			height: 100px;
 			position: absolute;
-			top: 0;
-			left: 0;
-			height: 100%;
-			width: 100%;
-			background: @rgba(0, 0, 0, 0.7);
+			border-radius: 100px;
+			transition: all 0.8s ease-out;
+			top: 0px;
+			display: none;
+			background-image: url(apple.png);
+			background-size: 100% 100%;
 		}
-		.page-content {
-			height: 600px;
+		.ground {
+			background: green;
+			position: absolute;
+			width: 1200px;
+			height: 50px;
+			top:  900px;
+		}
+		.btn {
+			width: 200px;
+			height: 100px;
+			background: orange;
+			font-size: 20px;
 		}
 	</style>
 </head>
-<body>
-	<div class="page-content"></div>
-	<div class="parallax">
-		<div class="parallax-content">
-		    <h1 class="parallax-h1">This is parallax</h1>
-			
-		</div>
-	</div>
-	<div class="page-content"></div>
+<body style="background: orange;">
+	<h1>Счёт:<span class="score1">0</span></h1>
+	<button class="btn">Начать игру</button>
+
+<div class="ground">
+	
+</div>
+
+
+
+<script type="text/javascript">
+	let speed = 0
+	let id = 0
+	let score = document.querySelector(".score1")
+	let score2 = 0
+	let btn = document.querySelector(".btn")
+
+	let randomizer = function(arg) {
+		let random = Math.random() * arg;
+		let round = Math.round(random);
+		return round;
+	}
+	
+	btn.onclick = function() {
+
+		for(let i=0; i<10; i=i+1) {
+
+				let box = document.createElement("div")
+				document.body.appendChild(box)
+				box.classList.add("sphere")
+				box.style.left = randomizer(900) + "px"
+	        }
+		
+
+
+		let sphere = document.querySelectorAll(".sphere")
+
+		for(let i=0; i<sphere.length; i=i+1) {
+			sphere[i].onclick = function() {
+				score2 = score2 + 1;
+                sphere[i].style.display = "none";
+                score.innerHTML = score2;
+                id = id + 1;
+                speed = -150;
+                if (id==10) {
+			    setTimeout(over,100);
+				}
+			}
+		}
+
+
+		let moving1 = function() {
+		    speed = speed + 150;
+			sphere[id].style.top = speed + "px";
+			sphere[id].style.display = "block";
+
+		    if(speed>=1000) {
+				speed = -150;
+				sphere[id].style.display = "none";
+				id = id + 1;
+				if (id==10) {
+			    setTimeout(over,100);
+				}
+			}
+		} 
+
+    	btn.style.display = "none"
+    	alert("Игра началась")
+		let Fall = setInterval(moving1,170);
+
+	        let over = function() {
+			clearInterval(Fall)
+			if (score2>=8) {
+				alert("Поздравляю ты собрал яблоки")
+			} else {
+				alert("О нет, яблоки упали")
+			}
+		}
+	}
+	
+	/*
+	    цикл () {
+	        создать элемент див
+	        ребенок боди див
+	        диву добавить класс сфера
+	        див.стайл.лефт = рандомайзер(900)
+	    }
+
+	    лет сферы = dqsAll найти все дивы с класом сфера
+
+	    цикл (10) {
+	    	сферы[i] нажатие = {
+	    		сферы[i] диспелй нон
+	    	}
+	    }
+
+	    функция падение = {
+	    	speed = speed + 150
+	    	сферы[i] топ = speed + px
+
+	    	if(speed>=1000) {
+	    		speed = 0; обнудить скорость
+	    		сферы[id] дисплей нон
+	    		id = id + 1
+	    		if (id==9) {
+	    			вызов функции остановить игру
+	    		}
+	    	}
+	    }
+
+	    let myInt = интервал(падение,300)
+
+	    функция остановить игру = {
+	        clearInteval(myInt)
+	    }
+	*/
+</script>
 </body>
 </html>
